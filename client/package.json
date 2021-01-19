@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,14 +13,11 @@
     "@emotion/server": "^11.0.0",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
-    "date-fns": "^2.11.1",
+    "clsx": "^1.1.1",
     "express": "^4.17.1",
-    "gray-matter": "^4.0.2",
     "next": "^10.0.0",
     "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "remark": "^12.0.0",
-    "remark-html": "^12.0.0"
+    "react-dom": "16.13.1"
   },
   "devDependencies": {
     "@types/node": "^13.11.0",

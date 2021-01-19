@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  server:
+    build: ./server
+    env_file:
+      - .env
+    ports:
+      - 5000:5000
+
+  client:
+    build: ./client
+    ports:
+      - 3000:3000
+
+  postgres:
+    image: postgres:latest
+    env_file:
+      - .env
+    volumes:
+      - postgres-quicksend:/var/lib/postgresql/data
+
+  position-recognition:
+    build: ./position-recognition
+
+volumes:
+  postgres-quicksend:

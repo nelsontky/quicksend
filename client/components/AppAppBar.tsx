@@ -14,9 +14,6 @@ const styles = (theme: Theme) => ({
   toolbar: {
     justifyContent: "space-between",
   },
-  left: {
-    flex: 1,
-  },
   leftLinkActive: {
     color: theme.palette.common.white,
   },
@@ -42,7 +39,6 @@ function AppAppBar(props: WithStyles<typeof styles> & AppBarProps) {
     <div>
       <AppBar position="fixed">
         <Toolbar className={classes.toolbar}>
-          <div className={classes.left} />
           <Link
             variant="h6"
             underline="none"
@@ -50,7 +46,7 @@ function AppAppBar(props: WithStyles<typeof styles> & AppBarProps) {
             className={classes.title}
             href="/premium-themes/onepirate/"
           >
-            {"onepirate"}
+            QuickSend
           </Link>
           <div className={classes.right}>
             <Link

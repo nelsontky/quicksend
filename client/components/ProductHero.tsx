@@ -9,13 +9,10 @@ import Button from "./Button";
 import Typography from "./Typography";
 import ProductHeroLayout from "./product-hero/ProductHeroLayout";
 
-const backgroundImage =
-  "https://images.unsplash.com/photo-1534854638093-bada1813ca19?auto=format&fit=crop&w=1400&q=80";
-
 const styles = (theme: Theme) =>
   createStyles({
     background: {
-      backgroundImage: `url(${backgroundImage})`,
+      backgroundImage: `url(/images/sand.jpg)`,
       backgroundColor: "#7fc7d9", // Average color of the background image.
       backgroundPosition: "center",
     },
@@ -29,9 +26,6 @@ const styles = (theme: Theme) =>
         marginTop: theme.spacing(10),
       },
     },
-    more: {
-      marginTop: theme.spacing(2),
-    },
   });
 
 function ProductHero(props: WithStyles<typeof styles>) {
@@ -42,11 +36,11 @@ function ProductHero(props: WithStyles<typeof styles>) {
       {/* Increase the network loading priority of the background image. */}
       <img
         style={{ display: "none" }}
-        src={backgroundImage}
+        src="/images/sand.jpg"
         alt="increase priority"
       />
       <Typography color="inherit" align="center" variant="h2" marked="center">
-        Upgrade your Sundays
+        Send your files quickly
       </Typography>
       <Typography
         color="inherit"
@@ -54,7 +48,7 @@ function ProductHero(props: WithStyles<typeof styles>) {
         variant="h5"
         className={classes.h5}
       >
-        Enjoy secret offers up to -70% off the best luxury hotels every Sunday.
+        Always fast. Always free. Always Simple.
       </Typography>
       <Button
         color="secondary"
@@ -66,9 +60,6 @@ function ProductHero(props: WithStyles<typeof styles>) {
       >
         Register
       </Button>
-      <Typography variant="body2" color="inherit" className={classes.more}>
-        Discover the experience
-      </Typography>
     </ProductHeroLayout>
   );
 }

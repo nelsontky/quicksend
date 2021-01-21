@@ -5,9 +5,11 @@ import {
   WithStyles,
   createStyles,
 } from "@material-ui/core/styles";
-import Button from "./Button";
 import Typography from "./Typography";
 import ProductHeroLayout from "./product-hero/ProductHeroLayout";
+
+import Upload from "./UploadDropzone";
+import UploadButton from "./UploadButton";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -21,9 +23,13 @@ const styles = (theme: Theme) =>
     },
     h5: {
       marginBottom: theme.spacing(4),
-      marginTop: theme.spacing(4),
-      [theme.breakpoints.up("sm")]: {
-        marginTop: theme.spacing(10),
+      marginTop: theme.spacing(2),
+    },
+    upload: {
+      marginBottom: theme.spacing(2),
+      width: "50%",
+      [theme.breakpoints.down("sm")]: {
+        width: "100%",
       },
     },
   });
@@ -50,16 +56,20 @@ function ProductHero(props: WithStyles<typeof styles>) {
       >
         Always fast. Always free. Always Simple.
       </Typography>
-      <Button
+      <Upload
+        onSelect={(acceptedFiles) => {
+          console.log("yay");
+        }}
+        className={classes.upload}
+      />
+      <UploadButton
         color="secondary"
         variant="contained"
         size="large"
         className={classes.button}
-        component="a"
-        href="/premium-themes/onepirate/sign-up/"
       >
-        Register
-      </Button>
+        Upload Now
+      </UploadButton>
     </ProductHeroLayout>
   );
 }

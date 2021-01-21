@@ -46,7 +46,7 @@ function AppAppBar(props: WithStyles<typeof styles> & AppBarProps) {
             className={classes.title}
             href="/premium-themes/onepirate/"
           >
-            QuickSend
+            QUICKSEND
           </Link>
           <div className={classes.right}>
             <Link

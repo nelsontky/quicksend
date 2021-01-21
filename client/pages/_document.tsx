@@ -12,7 +12,7 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <link
-            href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Work+Sans:wght@300;400;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Roboto&family=Work+Sans:wght@300;400;700&display=swap"
             rel="stylesheet"
           />
         </Head>

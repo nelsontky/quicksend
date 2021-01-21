@@ -71,13 +71,6 @@ function ProductHeroLayout(
         {children}
         <div className={classes.backdrop} />
         <div className={clsx(classes.background, backgroundClassName)} />
-        <img
-          className={classes.arrowDown}
-          src="/images/productHeroArrowDown.png"
-          height="16"
-          width="12"
-          alt="arrow down"
-        />
       </Container>
     </section>
   );

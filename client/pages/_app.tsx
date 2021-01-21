@@ -5,8 +5,12 @@ import { CacheProvider } from "@emotion/react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import createCache from "@emotion/cache";
 import { ThemeProvider } from "@material-ui/core/styles";
+import { Provider } from "react-redux";
+
+import Snackbars from "../components/Snackbars";
 
 import theme from "../lib/theme";
+import store from "../store";
 
 export const cache = createCache({ key: "css", prepend: true });
 
@@ -27,11 +31,14 @@ export default function MyApp(props: AppProps) {
         <title>My page</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <Snackbars />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </Provider>
     </CacheProvider>
   );
 }

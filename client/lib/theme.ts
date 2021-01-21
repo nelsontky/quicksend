@@ -40,8 +40,7 @@ const rawTheme = createMuiTheme({
 const fontHeader = {
   color: rawTheme.palette.text.primary,
   fontWeight: rawTheme.typography.fontWeightMedium,
-  fontFamily: "'Roboto Condensed', sans-serif",
-  textTransform: "uppercase",
+  fontFamily: "'Roboto', sans-serif",
 };
 
 const theme = {

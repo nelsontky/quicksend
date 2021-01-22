@@ -5,9 +5,10 @@ import {
   WithStyles,
   createStyles,
 } from "@material-ui/core/styles";
-import Typography from "./Typography";
-import ProductHeroLayout from "./product-hero/ProductHeroLayout";
 
+import Typography from "./Typography";
+import TypingText from "./TypingText";
+import ProductHeroLayout from "./product-hero/ProductHeroLayout";
 import Upload from "./UploadDropzone";
 import UploadButton from "./UploadButton";
 
@@ -45,9 +46,9 @@ function ProductHero(props: WithStyles<typeof styles>) {
         src="/images/sand.jpg"
         alt="increase priority"
       />
-      <Typography color="inherit" align="center" variant="h2" marked="center">
+      <TypingText color="inherit" align="center" variant="h2" marked="center">
         Send your files quickly
-      </Typography>
+      </TypingText>
       <Typography
         color="inherit"
         align="center"

@@ -1,10 +1,12 @@
 import * as React from "react";
+import NextLink from "next/link";
 import clsx from "clsx";
 import { AppBarProps, WithStyles } from "@material-ui/core";
 import { withStyles, Theme } from "@material-ui/core/styles";
-import Link from "@material-ui/core/Link";
 import AppBar from "./app-app-bar/AppBar";
 import Toolbar, { styles as toolbarStyles } from "./app-app-bar/Toolbar";
+
+import Link from "./Link";
 
 const styles = (theme: Theme) => ({
   title: {
@@ -44,7 +46,7 @@ function AppAppBar(props: WithStyles<typeof styles> & AppBarProps) {
             underline="none"
             color="inherit"
             className={classes.title}
-            href="/premium-themes/onepirate/"
+            href="/"
           >
             QUICKSEND
           </Link>

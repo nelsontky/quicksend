@@ -9,7 +9,7 @@ import {
 import Typography from "./Typography";
 import TypingText from "./TypingText";
 import ProductHeroLayout from "./product-hero/ProductHeroLayout";
-import Upload from "./UploadDropzone";
+import UploadDropzone from "./UploadDropzone";
 import UploadButton from "./UploadButton";
 
 const styles = (theme: Theme) =>
@@ -57,8 +57,8 @@ function ProductHero(props: WithStyles<typeof styles>) {
       >
         Always fast. Always free. Always Simple.
       </Typography>
-      <Upload
-        onSelect={(acceptedFiles) => {
+      <UploadDropzone
+        onDrop={(acceptedFiles) => {
           console.log("yay");
         }}
         className={classes.upload}

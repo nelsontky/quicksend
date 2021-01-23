@@ -2,10 +2,17 @@ import React from "react";
 import { useDropzone } from "react-dropzone";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
+import { DialogTitle, DialogContent } from "@material-ui/core";
 
 import { bytesToMb } from "../lib/utils";
+import ClosableDialog from "./ClosableDialog";
+import Typography from "./Typography";
 
-const useStyles = makeStyles((theme: Theme) =>
+export interface IStyles {
+  isDragActive: boolean;
+}
+
+const useStyles = makeStyles<Theme, IStyles>((theme: Theme) =>
   createStyles({
     container: {
       display: "flex",
@@ -20,7 +27,8 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: "20px",
       borderWidth: "2px",
       borderRadius: "2px",
-      borderColor: "#eeeeee",
+      borderColor: (props) =>
+        props.isDragActive ? theme.palette.secondary.main : "#eeeeee",
       borderStyle: "dashed",
       backgroundColor: "fafafa",
       outline: "none",
@@ -45,21 +53,35 @@ const useStyles = makeStyles((theme: Theme) =>
       WebkitHyphens: "auto",
       hyphens: "auto",
     },
+    errorDialog: {
+      width: "600px",
+    },
   })
 );
 
 export interface IUpload {
-  onSelect: (acceptedFiles: File[]) => void;
+  onDrop: (acceptedFiles: File[]) => void;
   [x: string]: any;
 }
 
-export default function UploadDropzone({ onSelect, ...rest }: IUpload) {
-  const classes = useStyles();
-  const onDrop = React.useCallback(onSelect, []);
-
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+export default function UploadDropzone({ onDrop, ...rest }: IUpload) {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const {
+    acceptedFiles,
+    fileRejections,
+    getRootProps,
+    getInputProps,
+    isDragActive,
+  } = useDropzone({
     onDrop,
+    onDropRejected: () => {
+      setIsOpen(true);
+    },
+    // maxSize: 4 * 1024 * 1024 * 1024,
+    maxSize: 1 * 1024 * 1024,
   });
+
+  const classes = useStyles({ isDragActive });
 
   const files = acceptedFiles.map((file) => (
     <li key={file.path}>
@@ -68,17 +90,41 @@ export default function UploadDropzone({ onSelect, ...rest }: IUpload) {
   ));
 
   return (
-    <section className={clsx(classes.container, rest.className)}>
-      <div {...getRootProps({ className: classes.dropzone })}>
-        <input {...getInputProps()} />
-        <p>Drag and drop some files here, or click to select files</p>
-      </div>
-      {acceptedFiles.length > 0 && (
-        <div className={classes.files}>
-          <h4>Selected Files</h4>
-          <ul>{files}</ul>
+    <>
+      <ClosableDialog
+        classes={{ paper: classes.errorDialog }}
+        open={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+        }}
+      >
+        <DialogTitle>File size exceeded!</DialogTitle>
+        <DialogContent>
+          <Typography>
+            The following files exceed the max file size of 4GB:
+          </Typography>
+          <ul>
+            {fileRejections.map((error) => (
+              <li key={error.file.path}>
+                {error.file.path} - {bytesToMb(error.file.size)} MB
+              </li>
+            ))}
+          </ul>
+        </DialogContent>
+      </ClosableDialog>
+      <section className={clsx(classes.container, rest.className)}>
+        <div {...getRootProps({ className: classes.dropzone })}>
+          <input {...getInputProps()} />
+          <p>Drag and drop some files here, or click to select files</p>
+          <span>(Max file size: 4GB)</span>
         </div>
-      )}
-    </section>
+        {acceptedFiles.length > 0 && (
+          <div className={classes.files}>
+            <h4>Selected Files</h4>
+            <ul>{files}</ul>
+          </div>
+        )}
+      </section>
+    </>
   );
 }

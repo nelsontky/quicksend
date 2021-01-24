@@ -7,12 +7,14 @@ import { DialogTitle, DialogContent } from "@material-ui/core";
 import { bytesToMb } from "../lib/utils";
 import ClosableDialog from "./ClosableDialog";
 import Typography from "./Typography";
+import { SelectedFile } from "../lib/interfaces";
+import SelectedFiles from "./SelectedFiles";
 
-export interface IStyles {
+interface StylesProps {
   isDragActive: boolean;
 }
 
-const useStyles = makeStyles<Theme, IStyles>((theme: Theme) =>
+const useStyles = makeStyles<Theme, StylesProps>((theme: Theme) =>
   createStyles({
     container: {
       display: "flex",
@@ -59,12 +61,12 @@ const useStyles = makeStyles<Theme, IStyles>((theme: Theme) =>
   })
 );
 
-export interface IUpload {
+export interface UploadProps {
   onDrop: (acceptedFiles: File[]) => void;
   [x: string]: any;
 }
 
-export default function UploadDropzone({ onDrop, ...rest }: IUpload) {
+export default function UploadDropzone({ onDrop, ...rest }: UploadProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const {
     acceptedFiles,
@@ -81,15 +83,12 @@ export default function UploadDropzone({ onDrop, ...rest }: IUpload) {
     maxSize: 1 * 1024 * 1024,
   });
 
-  console.log(acceptedFiles);
-
   const classes = useStyles({ isDragActive });
 
-  const files = acceptedFiles.map((file) => (
-    <li key={file.path}>
-      {file.path} - {bytesToMb(file.size)} MB
-    </li>
-  ));
+  const files: SelectedFile[] = acceptedFiles.map((file) => ({
+    file,
+    progress: -1,
+  }));
 
   return (
     <>
@@ -123,7 +122,7 @@ export default function UploadDropzone({ onDrop, ...rest }: IUpload) {
         {acceptedFiles.length > 0 && (
           <div className={classes.files}>
             <h4>Selected Files</h4>
-            <ul>{files}</ul>
+            <SelectedFiles selectedFiles={files} />
           </div>
         )}
       </section>

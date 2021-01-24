@@ -6,7 +6,7 @@ import Button from "./Button";
 import { alert } from "../slices/snackbarsSlice";
 import { useAppDispatch } from "../store";
 
-export interface IUploadButton {
+export interface UploadButtonProps {
   files: File[];
 }
 

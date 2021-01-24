@@ -27,11 +27,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface ITypingText {
+export interface TypingTextProps {
   [x: string]: any;
 }
 
-export default function TypingText(props: ITypingText) {
+export default function TypingText(props: TypingTextProps) {
   const classes = useStyles();
 
   return (

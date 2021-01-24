@@ -23,8 +23,8 @@ const styles = (theme: Theme) =>
       minWidth: 200,
     },
     h5: {
-      marginBottom: theme.spacing(4),
-      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(1),
+      marginTop: theme.spacing(1),
     },
     upload: {
       marginBottom: theme.spacing(2),
@@ -55,7 +55,7 @@ function ProductHero(props: WithStyles<typeof styles>) {
         variant="h5"
         className={classes.h5}
       >
-        Always fast. Always free. Always Simple.
+        Always fast. Always free. Always simple.
       </Typography>
       <UploadDropzone
         onDrop={(acceptedFiles) => {

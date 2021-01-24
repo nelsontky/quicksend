@@ -1,7 +1,7 @@
 import React from "react";
 
-import SelectedFile from "./SelectedFile";
-import { SelectedFile as ISelectedFile } from "../lib/interfaces";
+import SelectedFile from "./selected-files/SelectedFile";
+import { SelectedFile as ISelectedFile } from "../../lib/interfaces";
 
 export type SelectedFilesProps = {
   selectedFiles: ISelectedFile[];

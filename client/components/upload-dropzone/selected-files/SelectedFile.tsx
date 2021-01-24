@@ -3,8 +3,8 @@ import React from "react";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 
-import { SelectedFile as ISelectedFile } from "../lib/interfaces";
-import { bytesToMb } from "../lib/utils";
+import { SelectedFile as ISelectedFile } from "../../../lib/interfaces";
+import { bytesToMb } from "../../../lib/utils";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

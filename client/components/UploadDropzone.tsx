@@ -8,7 +8,7 @@ import { bytesToMb } from "../lib/utils";
 import ClosableDialog from "./ClosableDialog";
 import Typography from "./Typography";
 import { SelectedFile } from "../lib/interfaces";
-import SelectedFiles from "./SelectedFiles";
+import SelectedFiles from "./upload-dropzone/SelectedFiles";
 
 interface StylesProps {
   isDragActive: boolean;

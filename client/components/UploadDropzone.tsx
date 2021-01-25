@@ -83,8 +83,6 @@ export default function UploadDropzone({ onDrop, ...rest }: UploadProps) {
     maxSize: 1 * 1024 * 1024,
   });
 
-  console.log(acceptedFiles);
-
   const classes = useStyles({ isDragActive });
 
   const files: SelectedFile[] = acceptedFiles.map((file) => ({

@@ -5,6 +5,7 @@ import { CatsModule } from "./cats/cats.module";
 import { CoreModule } from "./core/core.module";
 import { FilesModule } from "./files/files.module";
 import { File } from "./files/entities/file.entity";
+import { UploadsModule } from "./uploads/uploads.module";
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { File } from "./files/entities/file.entity";
     CoreModule,
     CatsModule,
     FilesModule,
+    UploadsModule,
   ],
 })
 export class AppModule {}

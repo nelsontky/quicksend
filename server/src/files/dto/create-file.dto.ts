@@ -1,16 +1,19 @@
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsNumber, IsOptional, IsString, Length } from "class-validator";
 
 export class CreateFileDto {
   @IsString()
-  readonly id: string;
+  @Length(1)
+  readonly versionId: string;
 
   @IsString()
+  @Length(1)
   readonly name: string;
 
   @IsNumber()
   readonly size: number;
 
   @IsString()
+  @Length(1)
   readonly type: string;
 
   @IsOptional()

@@ -14,7 +14,7 @@ export class FilesService {
 
   create(createFileDto: CreateFileDto) {
     const file = new File();
-    file.id = createFileDto.id;
+    file.versionId = createFileDto.versionId;
     file.name = createFileDto.name;
     file.size = createFileDto.size;
     file.type = createFileDto.type;

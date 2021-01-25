@@ -37,7 +37,9 @@ export default function SelectedFile({
         {selectedFile.file.name} - {bytesToMb(selectedFile.file.size)} MB
       </span>
       <LinearProgress
-        className={clsx(selectedFile.progress < 0 && classes.hideProgress)}
+        className={clsx(
+          selectedFile.status !== "uploading" && classes.hideProgress
+        )}
         variant="determinate"
         color="secondary"
         value={selectedFile.progress}

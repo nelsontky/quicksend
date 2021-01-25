@@ -6,7 +6,7 @@ export class UploadsController {
   constructor(private readonly uploadsService: UploadsService) {}
 
   @Get()
-  getUploadUrl() {
-    return this.uploadsService.getUploadUrl();
+  getUploadData() {
+    return this.uploadsService.getUploadData();
   }
 }

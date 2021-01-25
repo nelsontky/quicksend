@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import axios from "axios";
 import { AuthData } from "./interfaces/auth-data.interface";
+import { UploadData } from "./interfaces/upload-data.interface";
 
 @Injectable()
 export class UploadsService {
@@ -20,7 +21,7 @@ export class UploadsService {
     return res.data;
   }
 
-  async getUploadUrl(): Promise<string> {
+  async getUploadData(): Promise<UploadData> {
     for (let i = 0; i < 5; i++) {
       if (!this.authData) {
         this.authData = await this.getAuthData();
@@ -38,7 +39,8 @@ export class UploadsService {
           }
         );
 
-        return res.data.uploadUrl;
+        const { authorizationToken, uploadUrl } = res.data;
+        return { authorizationToken, uploadUrl };
       } catch (err) {
         this.authData = await this.getAuthData();
       }

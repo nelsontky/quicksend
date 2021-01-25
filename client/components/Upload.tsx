@@ -9,6 +9,7 @@ import ClosableDialog from "./ClosableDialog";
 import Typography from "./Typography";
 import { SelectedFile } from "../lib/interfaces";
 import SelectedFiles from "./upload-dropzone/SelectedFiles";
+import UploadButton from "./UploadButton";
 
 interface StylesProps {
   isDragActive: boolean;
@@ -58,15 +59,15 @@ const useStyles = makeStyles<Theme, StylesProps>((theme: Theme) =>
     errorDialog: {
       width: "600px",
     },
+    button: {
+      minWidth: 200,
+    },
   })
 );
 
-export interface UploadProps {
-  onDrop: (acceptedFiles: File[]) => void;
-  [x: string]: any;
-}
-
-export default function UploadDropzone({ onDrop, ...rest }: UploadProps) {
+export default function UploadDropzone(
+  props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
+) {
   const [isOpen, setIsOpen] = React.useState(false);
   const {
     acceptedFiles,
@@ -75,7 +76,6 @@ export default function UploadDropzone({ onDrop, ...rest }: UploadProps) {
     getInputProps,
     isDragActive,
   } = useDropzone({
-    onDrop,
     onDropRejected: () => {
       setIsOpen(true);
     },
@@ -85,11 +85,17 @@ export default function UploadDropzone({ onDrop, ...rest }: UploadProps) {
 
   const classes = useStyles({ isDragActive });
 
-  const files: SelectedFile[] = acceptedFiles.map((file) => ({
-    file,
-    progress: 0,
-    status: "selected",
-  }));
+  const [selectedFiles, setSelectedFiles] = React.useState<SelectedFile[]>();
+
+  React.useEffect(() => {
+    setSelectedFiles(
+      acceptedFiles.map((file) => ({
+        file,
+        progress: 0,
+        status: "selected",
+      }))
+    );
+  }, [acceptedFiles]);
 
   return (
     <>
@@ -114,7 +120,7 @@ export default function UploadDropzone({ onDrop, ...rest }: UploadProps) {
           </ul>
         </DialogContent>
       </ClosableDialog>
-      <section className={clsx(classes.container, rest.className)}>
+      <section className={clsx(classes.container, props.className)}>
         <div {...getRootProps({ className: classes.dropzone })}>
           <input {...getInputProps()} />
           <p>Drag and drop some files here, or click to select files</p>
@@ -123,10 +129,20 @@ export default function UploadDropzone({ onDrop, ...rest }: UploadProps) {
         {acceptedFiles.length > 0 && (
           <div className={classes.files}>
             <h4>Selected Files</h4>
-            <SelectedFiles selectedFiles={files} />
+            <SelectedFiles selectedFiles={selectedFiles} />
           </div>
         )}
       </section>
+      <UploadButton
+        selectedFiles={selectedFiles}
+        setSelectedFiles={setSelectedFiles}
+        color="secondary"
+        variant="contained"
+        size="large"
+        className={classes.button}
+      >
+        Upload Now
+      </UploadButton>
     </>
   );
 }

@@ -4,13 +4,16 @@ import {
   Theme,
   WithStyles,
   createStyles,
+  useTheme,
 } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import Typography from "./Typography";
 import TypingText from "./TypingText";
 import ProductHeroLayout from "./product-hero/ProductHeroLayout";
-import UploadDropzone from "./UploadDropzone";
+import Upload from "./Upload";
 import UploadButton from "./UploadButton";
+import { SelectedFile } from "../lib/interfaces";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -18,9 +21,6 @@ const styles = (theme: Theme) =>
       backgroundImage: `url(/images/sand.jpg)`,
       backgroundColor: "#7fc7d9", // Average color of the background image.
       backgroundPosition: "center",
-    },
-    button: {
-      minWidth: 200,
     },
     h5: {
       marginBottom: theme.spacing(1),
@@ -37,6 +37,8 @@ const styles = (theme: Theme) =>
 
 function ProductHero(props: WithStyles<typeof styles>) {
   const { classes } = props;
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <ProductHeroLayout backgroundClassName={classes.background}>
@@ -46,9 +48,15 @@ function ProductHero(props: WithStyles<typeof styles>) {
         src="/images/sand.jpg"
         alt="increase priority"
       />
-      <TypingText color="inherit" align="center" variant="h2" marked="center">
-        Send your files quickly
-      </TypingText>
+      {matches ? (
+        <Typography color="inherit" align="center" variant="h2" marked="center">
+          Send your files quickly
+        </Typography>
+      ) : (
+        <TypingText color="inherit" align="center" variant="h2" marked="center">
+          Send your files quickly
+        </TypingText>
+      )}
       <Typography
         color="inherit"
         align="center"
@@ -57,20 +65,7 @@ function ProductHero(props: WithStyles<typeof styles>) {
       >
         Always fast. Always free. Always simple.
       </Typography>
-      <UploadDropzone
-        onDrop={(acceptedFiles) => {
-          console.log("yay");
-        }}
-        className={classes.upload}
-      />
-      <UploadButton
-        color="secondary"
-        variant="contained"
-        size="large"
-        className={classes.button}
-      >
-        Upload Now
-      </UploadButton>
+      <Upload className={classes.upload} />
     </ProductHeroLayout>
   );
 }

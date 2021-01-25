@@ -6,6 +6,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import createCache from "@emotion/cache";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
+import axios from "axios";
 
 import Snackbars from "../components/Snackbars";
 
@@ -24,6 +25,8 @@ export default function MyApp(props: AppProps) {
       jssStyles.parentElement!.removeChild(jssStyles);
     }
   }, []);
+
+  axios.defaults.baseURL = "/api/v1";
 
   return (
     <CacheProvider value={cache}>

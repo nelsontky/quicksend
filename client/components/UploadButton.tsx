@@ -5,22 +5,33 @@ import Button from "./Button";
 
 import { alert } from "../slices/snackbarsSlice";
 import { useAppDispatch } from "../store";
+import { SelectedFile } from "../lib/interfaces";
+import { uploadFile } from "../lib/upload";
 
-export interface UploadButtonProps {
-  files: File[];
-}
+export type UploadButtonProps = {
+  selectedFiles: SelectedFile[];
+  setSelectedFiles: (selectedFiles: SelectedFile[]) => void;
+} & ButtonProps;
 
-export default function UploadButton<C extends React.ElementType>(
-  props: ButtonProps<C, { component?: C }>
-) {
+export default function UploadButton(props: UploadButtonProps) {
+  const { selectedFiles, setSelectedFiles } = props;
   const dispatch = useAppDispatch();
 
-  return (
-    <Button
-      {...props}
-      onClick={() => {
-        dispatch(alert({ message: "No files to upload!", severity: "error" }));
-      }}
-    />
-  );
+  const onClick = () => {
+    if (selectedFiles.length === 0) {
+      dispatch(alert({ message: "No files to upload!", severity: "error" }));
+    } else {
+      selectedFiles.forEach((file, i) => {
+        const setFile = (editedFile: SelectedFile) => {
+          let newSelectedFiles = [...selectedFiles];
+          newSelectedFiles[i] = editedFile;
+          setSelectedFiles(newSelectedFiles);
+        };
+
+        uploadFile(file, setFile);
+      });
+    }
+  };
+
+  return <Button {...props} onClick={onClick} />;
 }

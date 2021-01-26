@@ -65,7 +65,7 @@ const useStyles = makeStyles<Theme, StylesProps>((theme: Theme) =>
     },
     buttonContainer: {
       margin: "0 auto",
-      marginTop: theme.spacing(2)
+      marginTop: theme.spacing(2),
     },
     button: {
       minWidth: 200,
@@ -104,6 +104,8 @@ export default function UploadDropzone(
       }))
     );
   }, [acceptedFiles]);
+
+  console.log(acceptedFiles);
 
   const [showDropzone, setShowDropzone] = React.useState(true);
   return (

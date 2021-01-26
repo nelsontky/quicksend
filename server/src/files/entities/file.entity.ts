@@ -8,17 +8,12 @@ export class File {
 
   @Column()
   @Length(1)
-  versionId: string;
-
-  @Column()
-  @Length(1)
   name: string;
 
   @Column()
   size: number;
 
   @Column()
-  @Length(1)
   type: string;
 
   @Column({ nullable: true, default: null })

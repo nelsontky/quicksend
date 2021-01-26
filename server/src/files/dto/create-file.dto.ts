@@ -3,7 +3,7 @@ import { IsNumber, IsOptional, IsString, Length } from "class-validator";
 export class CreateFileDto {
   @IsString()
   @Length(1)
-  readonly versionId: string;
+  readonly id: string;
 
   @IsString()
   @Length(1)
@@ -13,7 +13,6 @@ export class CreateFileDto {
   readonly size: number;
 
   @IsString()
-  @Length(1)
   readonly type: string;
 
   @IsOptional()

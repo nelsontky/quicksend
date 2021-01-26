@@ -17,10 +17,10 @@ export class FilesController {
   //   return this.filesService.findAll();
   // }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.filesService.findOne(id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.filesService.checkFileExists(id);
+  // }
 
   // @Put(':id')
   // update(@Param('id') id: string, @Body() updateFileDto: UpdateFileDto) {

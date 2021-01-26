@@ -2,7 +2,13 @@ import React from "react";
 import { useDropzone } from "react-dropzone";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import { DialogTitle, DialogContent } from "@material-ui/core";
+import {
+  DialogTitle,
+  DialogContent,
+  Collapse,
+  Fade,
+  Grid,
+} from "@material-ui/core";
 
 import { bytesToMb } from "../lib/utils";
 import ClosableDialog from "./ClosableDialog";
@@ -18,8 +24,7 @@ interface StylesProps {
 const useStyles = makeStyles<Theme, StylesProps>((theme: Theme) =>
   createStyles({
     container: {
-      display: "flex",
-      flexDirection: "column",
+      maxHeight: "350px",
     },
     dropzone: {
       textAlign: "center",
@@ -45,7 +50,6 @@ const useStyles = makeStyles<Theme, StylesProps>((theme: Theme) =>
     },
     files: {
       width: "100%",
-      maxHeight: theme.spacing(15),
       overflowY: "scroll",
       overflowWrap: "break-word",
       wordWrap: "break-word",
@@ -58,6 +62,10 @@ const useStyles = makeStyles<Theme, StylesProps>((theme: Theme) =>
     },
     errorDialog: {
       width: "600px",
+    },
+    buttonContainer: {
+      margin: "0 auto",
+      marginTop: theme.spacing(2)
     },
     button: {
       minWidth: 200,
@@ -79,8 +87,8 @@ export default function UploadDropzone(
     onDropRejected: () => {
       setIsOpen(true);
     },
-    // maxSize: 4 * 1024 * 1024 * 1024,
-    maxSize: 1 * 1024 * 1024,
+    maxSize: 4 * 1024 * 1024 * 1024,
+    // maxSize: 1 * 1024 * 1024,
   });
 
   const classes = useStyles({ isDragActive });
@@ -97,6 +105,7 @@ export default function UploadDropzone(
     );
   }, [acceptedFiles]);
 
+  const [showDropzone, setShowDropzone] = React.useState(true);
   return (
     <>
       <ClosableDialog
@@ -120,29 +129,45 @@ export default function UploadDropzone(
           </ul>
         </DialogContent>
       </ClosableDialog>
-      <section className={clsx(classes.container, props.className)}>
-        <div {...getRootProps({ className: classes.dropzone })}>
-          <input {...getInputProps()} />
-          <p>Drag and drop some files here, or click to select files</p>
-          <span>(Max file size: 4GB)</span>
-        </div>
+      <Grid
+        container
+        wrap="nowrap"
+        direction="column"
+        className={clsx(classes.container, props.className)}
+      >
+        <Grid item>
+          <Collapse in={showDropzone}>
+            <div {...getRootProps({ className: classes.dropzone })}>
+              <input {...getInputProps()} />
+              <p>Drag and drop some files here, or click to select files</p>
+              <span>(Max file size: 4GB)</span>
+            </div>
+          </Collapse>
+        </Grid>
         {acceptedFiles.length > 0 && (
-          <div className={classes.files}>
+          <Grid item className={classes.files}>
             <h4>Selected Files</h4>
             <SelectedFiles selectedFiles={selectedFiles} />
-          </div>
+          </Grid>
         )}
-      </section>
-      <UploadButton
-        selectedFiles={selectedFiles}
-        setSelectedFiles={setSelectedFiles}
-        color="secondary"
-        variant="contained"
-        size="large"
-        className={classes.button}
-      >
-        Upload Now
-      </UploadButton>
+        <Grid item className={classes.buttonContainer}>
+          <Fade in={showDropzone}>
+            <UploadButton
+              selectedFiles={selectedFiles}
+              setSelectedFiles={setSelectedFiles}
+              hideDropzone={() => {
+                setShowDropzone(false);
+              }}
+              color="secondary"
+              variant="contained"
+              size="large"
+              className={classes.button}
+            >
+              Upload Now
+            </UploadButton>
+          </Fade>
+        </Grid>
+      </Grid>
     </>
   );
 }

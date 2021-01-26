@@ -14,7 +14,12 @@ export class UploadsService {
     });
     AWS.config.credentials = credentials;
     const endpoint = new AWS.Endpoint(process.env.B2_AWS_ENDPOINT);
-    this.s3 = new AWS.S3({ endpoint, signatureVersion: "v4" });
+
+    this.s3 = new AWS.S3({
+      endpoint,
+      signatureVersion: "v4",
+      region: "us-west-000",
+    });
   }
 
   async getSignedPut() {

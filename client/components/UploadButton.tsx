@@ -10,22 +10,31 @@ import { uploadFile } from "../lib/upload";
 
 export type UploadButtonProps = {
   selectedFiles: SelectedFile[];
-  setSelectedFiles: (selectedFiles: SelectedFile[]) => void;
+  setSelectedFiles: React.Dispatch<React.SetStateAction<SelectedFile[]>>;
+  hideDropzone: () => void;
 } & ButtonProps;
 
 export default function UploadButton(props: UploadButtonProps) {
-  const { selectedFiles, setSelectedFiles, ...rest } = props;
+  const { selectedFiles, setSelectedFiles, hideDropzone, ...rest } = props;
   const dispatch = useAppDispatch();
 
   const onClick = () => {
     if (selectedFiles.length === 0) {
       dispatch(alert({ message: "No files to upload!", severity: "error" }));
     } else {
+      hideDropzone();
+      
+      setSelectedFiles((selectedFiles) =>
+        selectedFiles.map((file) => ({ ...file, status: "pending" }))
+      );
+
       selectedFiles.forEach((file, i) => {
         const setFile = (editedFile: SelectedFile) => {
-          let newSelectedFiles = [...selectedFiles];
-          newSelectedFiles[i] = editedFile;
-          setSelectedFiles(newSelectedFiles);
+          setSelectedFiles((selectedFiles: SelectedFile[]) => {
+            let newSelectedFiles = [...selectedFiles];
+            newSelectedFiles[i] = editedFile;
+            return newSelectedFiles;
+          });
         };
 
         uploadFile(file, setFile);

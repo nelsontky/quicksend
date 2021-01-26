@@ -12,8 +12,6 @@ import Typography from "./Typography";
 import TypingText from "./TypingText";
 import ProductHeroLayout from "./product-hero/ProductHeroLayout";
 import Upload from "./Upload";
-import UploadButton from "./UploadButton";
-import { SelectedFile } from "../lib/interfaces";
 
 const styles = (theme: Theme) =>
   createStyles({

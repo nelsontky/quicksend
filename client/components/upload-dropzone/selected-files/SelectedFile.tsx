@@ -5,6 +5,7 @@ import clsx from "clsx";
 
 import { SelectedFile as ISelectedFile } from "../../../lib/interfaces";
 import { bytesToMb } from "../../../lib/utils";
+import Typography from "../../Typography";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -13,7 +14,10 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingRight: theme.spacing(2),
     },
     hideProgress: {
-      display: "none",
+      visibility: "hidden",
+    },
+    errorText: {
+      color: theme.palette.error.main,
     },
   })
 );
@@ -44,6 +48,14 @@ export default function SelectedFile({
         color="secondary"
         value={selectedFile.progress}
       />
+      {selectedFile.status === "pending" && (
+        <Typography variant="caption">Loading...</Typography>
+      )}
+      {selectedFile.status === "error" && (
+        <Typography className={classes.errorText} variant="caption">
+          An error has occurred. Please try uploading again later.
+        </Typography>
+      )}
     </li>
   );
 }

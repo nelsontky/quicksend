@@ -11,9 +11,15 @@ export async function uploadFile(
   file: SelectedFile,
   setFile: (file: SelectedFile) => void
 ) {
-  const signedPut = await getSignedPut();
   try {
-    axios.put(signedPut.url, file.file);
+    const signedPut = await getSignedPut();
+    await axios.put(signedPut.url, file.file, {
+      onUploadProgress: (progressEvent: ProgressEvent) => {
+        const progress = (progressEvent.loaded * 100) / progressEvent.total;
+
+        setFile({ ...file, progress, status: "uploading" });
+      },
+    });
   } catch {
     setFile({ ...file, status: "error" });
   }

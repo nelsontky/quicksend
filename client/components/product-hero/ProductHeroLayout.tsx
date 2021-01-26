@@ -23,7 +23,6 @@ const styles = (theme: Theme) =>
     },
     container: {
       marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(14),
       display: "flex",
       flexDirection: "column",
       alignItems: "center",

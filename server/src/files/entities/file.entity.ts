@@ -3,7 +3,7 @@ import { Length } from "class-validator";
 
 @Entity()
 export class File {
-  @PrimaryColumn()
+  @PrimaryColumn("uuid")
   id: string;
 
   @Column()

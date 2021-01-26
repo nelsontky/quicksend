@@ -14,7 +14,7 @@ export type UploadButtonProps = {
 } & ButtonProps;
 
 export default function UploadButton(props: UploadButtonProps) {
-  const { selectedFiles, setSelectedFiles } = props;
+  const { selectedFiles, setSelectedFiles, ...rest } = props;
   const dispatch = useAppDispatch();
 
   const onClick = () => {
@@ -33,5 +33,5 @@ export default function UploadButton(props: UploadButtonProps) {
     }
   };
 
-  return <Button {...props} onClick={onClick} />;
+  return <Button {...rest} onClick={onClick} />;
 }

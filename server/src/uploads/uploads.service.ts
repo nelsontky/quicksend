@@ -18,8 +18,13 @@ export class UploadsService {
   }
 
   async getSignedPut() {
-    const params = { Bucket: "quicksend-1", Key: uuidv4(), Expires: 60 };
+    const fileId = uuidv4();
+    const params = {
+      Bucket: process.env.B2_BUCKET_NAME,
+      Key: fileId,
+      Expires: 60,
+    };
     const url = await this.s3.getSignedUrlPromise("putObject", params);
-    return url;
+    return { url, id: fileId };
   }
 }

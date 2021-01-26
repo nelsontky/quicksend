@@ -1,14 +1,9 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-} from "typeorm";
+import { Entity, Column, PrimaryColumn, CreateDateColumn } from "typeorm";
 import { Length } from "class-validator";
 
 @Entity()
 export class File {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryColumn()
   id: string;
 
   @Column()

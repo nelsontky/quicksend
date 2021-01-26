@@ -1,54 +1,25 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import axios from "axios";
-import { AuthData } from "./interfaces/auth-data.interface";
-import { UploadData } from "./interfaces/upload-data.interface";
+import { Injectable } from "@nestjs/common";
+import AWS from "aws-sdk";
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class UploadsService {
-  authData: AuthData;
+  s3: AWS.S3;
 
-  async getAuthData(): Promise<AuthData> {
-    const res = await axios.get(
-      "https://api.backblazeb2.com/b2api/v2/b2_authorize_account",
-      {
-        auth: {
-          username: process.env.B2_APP_UPLOAD_ID,
-          password: process.env.B2_APP_UPLOAD_KEY,
-        },
-      }
-    );
-
-    return res.data;
+  constructor() {
+    // Create an S3 client for upload
+    const credentials = new AWS.Credentials({
+      accessKeyId: process.env.B2_APP_UPLOAD_ID,
+      secretAccessKey: process.env.B2_APP_UPLOAD_KEY,
+    });
+    AWS.config.credentials = credentials;
+    const endpoint = new AWS.Endpoint(process.env.B2_AWS_ENDPOINT);
+    this.s3 = new AWS.S3({ endpoint, signatureVersion: "v4" });
   }
 
-  async getUploadData(): Promise<UploadData> {
-    for (let i = 0; i < 5; i++) {
-      if (!this.authData) {
-        this.authData = await this.getAuthData();
-      }
-
-      try {
-        const res = await axios.post(
-          this.authData.apiUrl + "/b2api/v2/b2_get_upload_url",
-          { bucketId: this.authData.allowed.bucketId },
-          {
-            headers: {
-              Authorization: this.authData.authorizationToken,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        const { authorizationToken, uploadUrl } = res.data;
-        return { authorizationToken, uploadUrl };
-      } catch (err) {
-        this.authData = await this.getAuthData();
-      }
-    }
-
-    throw new HttpException(
-      "Internal Server Error",
-      HttpStatus.INTERNAL_SERVER_ERROR
-    );
+  async getSignedPut() {
+    const params = { Bucket: "quicksend-1", Key: uuidv4(), Expires: 60 };
+    const url = await this.s3.getSignedUrlPromise("putObject", params);
+    return url;
   }
 }

@@ -6,7 +6,7 @@ export class UploadsController {
   constructor(private readonly uploadsService: UploadsService) {}
 
   @Get()
-  getUploadData() {
-    return this.uploadsService.getUploadData();
+  getSignedPut() {
+    return this.uploadsService.getSignedPut();
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { CreateFileDto } from "./dto/create-file.dto";
+import { IFile } from "./interfaces/file.interface";
 import AWS from "aws-sdk";
 // import { UpdateFileDto } from './dto/update-file.dto';
 
@@ -29,43 +29,17 @@ export class FilesService {
     });
   }
 
-  async checkFileExists(id: string) {
-    return new Promise((resolve, _) => {
-      const params = { Bucket: process.env.B2_BUCKET_NAME, Key: id };
-      this.s3.headObject(params, (err, _) => {
-        if (err) {
-          resolve(false);
-        } else {
-          resolve(true);
-        }
-      });
-    });
-  }
-
-  create(createFileDto: CreateFileDto) {
+  create(fileToCreate: IFile) {
     const file = new File();
-    file.id = createFileDto.id;
-    file.name = createFileDto.name;
-    file.size = createFileDto.size;
-    file.type = createFileDto.type;
-    file.createdBy = createFileDto.createdBy;
+    file.id = fileToCreate.id;
+    file.name = fileToCreate.name;
+    file.size = fileToCreate.size;
+    file.type = fileToCreate.type;
 
     return this.filesRepository.save(file);
   }
 
-  // findAll() {
-  //   return `This action returns all files`;
-  // }
-
   findOne(id: string) {
     return this.filesRepository.findOne(id);
   }
-
-  // update(id: number, updateFileDto: UpdateFileDto) {
-  //   return `This action updates a #${id} file`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} file`;
-  // }
 }

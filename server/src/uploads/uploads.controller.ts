@@ -1,4 +1,5 @@
-import { Controller, Get, Query } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { CreateFileDto } from "./dto/create-file.dto";
 import { UploadsService } from "./uploads.service";
 
 @Controller("uploads")
@@ -11,5 +12,10 @@ export class UploadsController {
     @Query("fileType") fileType: string
   ) {
     return this.uploadsService.getUploadUrls(fileSize, fileType);
+  }
+
+  @Post("/complete")
+  completeUpload(@Body() body: CreateFileDto) {
+    this.uploadsService.completeUpload(body);
   }
 }

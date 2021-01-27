@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import AWS from "aws-sdk";
 import { resolve } from "path";
 import { v4 as uuidv4 } from "uuid";
+import { CreateFileDto } from "./dto/create-file.dto";
 
 @Injectable()
 export class UploadsService {
@@ -40,7 +41,6 @@ export class UploadsService {
     const params = {
       Bucket: process.env.B2_BUCKET_NAME,
       Key: uuidv4(),
-      // Expires: 60,
       ContentType: fileType,
     };
     try {
@@ -59,18 +59,52 @@ export class UploadsService {
             Key: uploadData.Key,
             PartNumber: i,
             UploadId: uploadData.UploadId,
+            Expires: 60,
           })
         );
       }
 
-      return await Promise.all(signedUrlPromises);
+      const signedUrls = await Promise.all(signedUrlPromises);
+      return { key: uploadData.Key, uploadId: uploadData.UploadId, signedUrls };
     } catch {
       throw new HttpException(
         "Internal Server Error",
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
-    // const url = await this.s3.getSignedUrlPromise("putObject", params);
-    // return { url, id: fileId };
+  }
+
+  private async completeMultipartUpload(
+    params: AWS.S3.CompleteMultipartUploadRequest
+  ) {
+    return new Promise((resolve, reject) => {
+      this.s3.completeMultipartUpload(params, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+
+  async completeUpload(body: CreateFileDto) {
+    const params = {
+      Bucket: process.env.B2_BUCKET_NAME,
+      Key: body.id,
+      MultipartUpload: {
+        Parts: body.parts,
+      },
+      UploadId: body.uploadId,
+    };
+
+    try {
+      await this.completeMultipartUpload(params);
+    } catch {
+      throw new HttpException(
+        "Internal Server Error",
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 }

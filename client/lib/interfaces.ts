@@ -4,7 +4,8 @@ export interface SelectedFile {
   status: "selected" | "pending" | "uploading" | "completed" | "error";
 }
 
-export interface SignedPut {
-  id: string;
-  url: string;
+export interface UploadUrls {
+  key: string;
+  uploadId: string;
+  signedUrls: string[];
 }

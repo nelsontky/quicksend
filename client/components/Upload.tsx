@@ -105,8 +105,6 @@ export default function UploadDropzone(
     );
   }, [acceptedFiles]);
 
-  console.log(acceptedFiles);
-
   const [showDropzone, setShowDropzone] = React.useState(true);
   return (
     <>

@@ -47,9 +47,8 @@ export class UploadsService {
       const uploadData = await this.createMultipartUpload(params);
       const numberOfChunks = Math.min(
         +process.env.MAX_UPLOAD_CHUNKS,
-        Math.ceil(fileSize / +process.env.MIN_UPLOAD_CHUNK_SIZE)
+        Math.floor(fileSize / +process.env.MIN_UPLOAD_CHUNK_SIZE) + 1
       );
-
       let signedUrlPromises = [];
 
       for (let i = 1; i <= numberOfChunks; i++) {
@@ -97,10 +96,12 @@ export class UploadsService {
       },
       UploadId: body.uploadId,
     };
+    console.log(params);
 
     try {
       await this.completeMultipartUpload(params);
-    } catch {
+    } catch (err) {
+      console.log(err);
       throw new HttpException(
         "Internal Server Error",
         HttpStatus.INTERNAL_SERVER_ERROR

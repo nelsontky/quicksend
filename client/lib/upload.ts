@@ -17,25 +17,40 @@ export async function uploadFile(
     const uploadUrls = await getUploadUrls(file);
     const numberOfChunks = uploadUrls.signedUrls.length;
     const fileChunkSize = Math.floor(file.file.size / numberOfChunks) + 1;
-    console.log(fileChunkSize);
     let uploadPromises = [];
 
-    // let start;
-    // let end;
-    // let blob;
-    // for (let i = 1; i < numberOfChunks; i++) {
-    //   start = (i - 1) & fileChunkSize;
-    //   end = i * fileChunkSize;
-    //   blob = (i < numberOfChunks) ? file.file.slice(start, end)
-    // }
-    console.log(uploadUrls);
-    // await axios.put(signedPut.url, file.file, {
-    //   onUploadProgress: (progressEvent: ProgressEvent) => {
-    //     const progress = (progressEvent.loaded * 100) / progressEvent.total;
+    let start: number = 0;
+    let end: number = 0;
+    let blob: Blob = null;
+    for (let i = 1; i <= numberOfChunks; i++) {
+      start = (i - 1) * fileChunkSize;
+      end = i * fileChunkSize;
+      blob =
+        i < numberOfChunks
+          ? file.file.slice(start, end)
+          : file.file.slice(start);
 
-    //     setFile({ ...file, progress, status: "uploading" });
-    //   },
-    // });
+      const uploadUrl = uploadUrls.signedUrls[i - 1];
+
+      uploadPromises.push(
+        axios.put(uploadUrl, blob, {
+          headers: { "Content-Type": file.file.type },
+        })
+      );
+    }
+
+    const uploads = await Promise.all(uploadPromises);
+    await axios.post("/uploads/complete", {
+      id: uploadUrls.key,
+      uploadId: uploadUrls.uploadId,
+      parts: uploads.map((response, i) => ({
+        ETag: response.headers.etag,
+        PartNumber: i + 1,
+      })),
+      name: file.file.name,
+      size: file.file.size,
+      type: file.file.type,
+    });
   } catch {
     setFile({ ...file, status: "error" });
   }

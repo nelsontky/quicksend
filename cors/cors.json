@@ -3,6 +3,7 @@
     "corsRuleName": "uploadFromLocalhost",
     "allowedOrigins": ["http://localhost:3000"],
     "allowedHeaders": ["*"],
+    "exposeHeaders": ["ETag"],
     "allowedOperations": ["s3_put"],
     "maxAgeSeconds": 3600
   }

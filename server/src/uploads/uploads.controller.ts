@@ -30,11 +30,12 @@ export class UploadsController {
   @Post("complete")
   async completeUpload(@Body() body: CreateFileDto) {
     await this.uploadsService.completeUpload(body);
-    return await this.filesService.create({
+    const newFile = await this.filesService.create({
       id: body.id,
       name: body.name,
       size: body.size,
       type: body.type,
     });
+    return newFile.id;
   }
 }

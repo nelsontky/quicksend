@@ -101,7 +101,6 @@ export class UploadsService {
     try {
       await this.completeMultipartUpload(params);
     } catch (err) {
-      console.log(err);
       throw new HttpException(
         "Internal Server Error",
         HttpStatus.INTERNAL_SERVER_ERROR

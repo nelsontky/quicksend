@@ -9,8 +9,9 @@ export class CreateFileDto {
   @Length(1)
   readonly name: string;
 
-  @IsNumber()
-  readonly size: number;
+  @IsString()
+  @Length(1)
+  readonly size: string;
 
   @IsString()
   readonly type: string;

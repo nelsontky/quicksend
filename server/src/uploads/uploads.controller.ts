@@ -18,6 +18,15 @@ export class UploadsController {
     return this.uploadsService.getUploadUrls(fileSize, fileType);
   }
 
+  @Get("single")
+  getUploadUrl(
+    @Query("key") key: string,
+    @Query("partNumber") partNumber: number,
+    @Query("uploadId") uploadId: string
+  ) {
+    return this.uploadsService.getUploadUrl(key, partNumber, uploadId);
+  }
+
   @Post("complete")
   async completeUpload(@Body() body: CreateFileDto) {
     await this.uploadsService.completeUpload(body);

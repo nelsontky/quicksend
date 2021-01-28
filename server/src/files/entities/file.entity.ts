@@ -11,7 +11,7 @@ export class File {
   name: string;
 
   @Column()
-  size: number;
+  size: string;
 
   @Column()
   type: string;

@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import AWS from "aws-sdk";
-import { resolve } from "path";
 import { v4 as uuidv4 } from "uuid";
 import { CreateFileDto } from "./dto/create-file.dto";
 
@@ -31,8 +30,9 @@ export class UploadsService {
       this.s3.createMultipartUpload(params, (err, data) => {
         if (err) {
           reject(err);
+        } else {
+          resolve(data);
         }
-        resolve(data);
       });
     });
   }
@@ -45,20 +45,22 @@ export class UploadsService {
     };
     try {
       const uploadData = await this.createMultipartUpload(params);
-      const numberOfChunks = Math.min(
-        +process.env.MAX_UPLOAD_CHUNKS,
-        Math.floor(fileSize / +process.env.MIN_UPLOAD_CHUNK_SIZE) + 1
-      );
+      // const numberOfChunks = Math.min(
+      //   +process.env.MAX_UPLOAD_CHUNKS,
+      //   Math.floor(fileSize / +process.env.MIN_UPLOAD_CHUNK_SIZE) + 1
+      // );
+      const numberOfChunks =
+        Math.floor(fileSize / +process.env.MIN_UPLOAD_CHUNK_SIZE) + 1;
       let signedUrlPromises = [];
 
       for (let i = 1; i <= numberOfChunks; i++) {
         signedUrlPromises.push(
-          this.s3.getSignedUrl("uploadPart", {
+          this.s3.getSignedUrlPromise("uploadPart", {
             Bucket: process.env.B2_BUCKET_NAME,
             Key: uploadData.Key,
             PartNumber: i,
             UploadId: uploadData.UploadId,
-            Expires: 60,
+            Expires: 3,
           })
         );
       }
@@ -71,6 +73,16 @@ export class UploadsService {
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
+  }
+
+  async getUploadUrl(key: string, partNumber: number, uploadId: string) {
+    return await this.s3.getSignedUrlPromise("uploadPart", {
+      Bucket: process.env.B2_BUCKET_NAME,
+      Key: key,
+      PartNumber: partNumber,
+      UploadId: uploadId,
+      // Expires: 60,
+    });
   }
 
   private async completeMultipartUpload(
@@ -96,11 +108,10 @@ export class UploadsService {
       },
       UploadId: body.uploadId,
     };
-    console.log(params);
 
     try {
       await this.completeMultipartUpload(params);
-    } catch (err) {
+    } catch {
       throw new HttpException(
         "Internal Server Error",
         HttpStatus.INTERNAL_SERVER_ERROR

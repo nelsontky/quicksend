@@ -90,7 +90,7 @@ export async function uploadFile(
         .catch(() => null);
     });
     const secondBatch = await Promise.all(secondBatchPromises);
-    const secondBatchSuccess = secondBatch.filter((res) => !res.rejected);
+    const secondBatchSuccess = secondBatch.filter((res) => !!res);
 
     if (
       firstBatchSuccess.length + secondBatchSuccess.length !==

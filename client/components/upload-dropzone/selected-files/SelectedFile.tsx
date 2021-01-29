@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { SelectedFile as ISelectedFile } from "../../../lib/interfaces";
 import { bytesToMb } from "../../../lib/utils";
 import Typography from "../../Typography";
+import InputCopy from "../../InputCopy";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,6 +56,9 @@ export default function SelectedFile({
         <Typography className={classes.errorText} variant="caption">
           An error has occurred. Please try uploading again later.
         </Typography>
+      )}
+      {selectedFile.status === "completed" && selectedFile.downloadLink && (
+        <InputCopy value={selectedFile.downloadLink} />
       )}
     </li>
   );

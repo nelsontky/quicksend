@@ -8,6 +8,9 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import axios from "axios";
 
+import AppAppBar from "../components/AppAppBar";
+import AppFooter from "../components/AppFooter";
+
 import Snackbars from "../components/Snackbars";
 
 import theme from "../lib/theme";
@@ -32,7 +35,7 @@ export default function MyApp(props: AppProps) {
   return (
     <CacheProvider value={cache}>
       <Head>
-        <title>My page</title>
+        <title>Quick Send</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <Provider store={store}>
@@ -40,7 +43,9 @@ export default function MyApp(props: AppProps) {
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <Snackbars />
+          <AppAppBar />
           <Component {...pageProps} />
+          <AppFooter />
         </ThemeProvider>
       </Provider>
     </CacheProvider>

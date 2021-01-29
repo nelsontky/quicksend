@@ -26,7 +26,8 @@ export default function MyApp(props: AppProps) {
     }
   }, []);
 
-  axios.defaults.baseURL = "/api/v1";
+  axios.defaults.baseURL =
+    typeof window !== "undefined" ? "/api/v1" : "http://server:5000/api/v1";
 
   return (
     <CacheProvider value={cache}>

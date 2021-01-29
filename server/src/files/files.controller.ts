@@ -3,9 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Put,
   Param,
-  Delete,
 } from "@nestjs/common";
 import { FilesService } from "./files.service";
 import { CreateFileDto } from "./dto/create-file.dto";
@@ -13,6 +11,11 @@ import { CreateFileDto } from "./dto/create-file.dto";
 @Controller("files")
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
+
+  @Get(":id")
+  async findOne(@Param("id") id: string) {
+    return this.filesService.findOne(id);
+  }
 
   @Post()
   async create(@Body() createFileDto: CreateFileDto) {

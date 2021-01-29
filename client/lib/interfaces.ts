@@ -10,3 +10,12 @@ export interface UploadUrls {
   uploadId: string;
   signedUrls: string[];
 }
+
+export interface UploadedFile {
+  id: string;
+  name: string;
+  size: string;
+  type: string;
+  createdBy: string;
+  createdAt: Date;
+}

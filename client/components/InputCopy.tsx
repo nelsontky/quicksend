@@ -16,8 +16,6 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.grey[200],
     },
     input: {
-      borderTopRightRadius: "0",
-      borderBottomRightRadius: "0",
       position: "relative",
       width: "100%",
       minHeight: "34px",

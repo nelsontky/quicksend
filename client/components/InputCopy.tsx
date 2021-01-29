@@ -60,6 +60,7 @@ export default function InputCopy(
       <Grid item xs={10}>
         <input
           {...props}
+          onChange={() => null}
           ref={inputRef}
           className={classes.input}
           type="text"

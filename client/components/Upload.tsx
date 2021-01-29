@@ -98,13 +98,13 @@ export default function UploadDropzone(
   React.useEffect(() => {
     setSelectedFiles(
       acceptedFiles.map((file) => ({
-        // file,
-        // progress: 0,
-        // status: "selected",
         file,
-        progress: 100,
-        status: "completed",
-        downloadLink: "localhost:3000/6736193198",
+        progress: 0,
+        status: "selected",
+        // file,
+        // progress: 100,
+        // status: "completed",
+        // downloadLink: "localhost:3000/6736193198",
       }))
     );
   }, [acceptedFiles]);

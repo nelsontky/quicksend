@@ -107,6 +107,14 @@ export async function uploadFile(
       size: "" + file.file.size,
       type: file.file.type,
     });
+
+    if (typeof window !== "undefined") {
+      setFile({
+        ...file,
+        status: "completed",
+        downloadLink: `${window.location.protocol}//${window.location.host}/${uploadUrls.key}`,
+      });
+    }
   } catch {
     setFile({ ...file, status: "error" });
   }

@@ -10,8 +10,8 @@ export class FilesController {
 
   @UseGuards(CaptchaGuard)
   @Post("/download/:id")
-  download(@Param("id") id: string) {
-    this.filesService.download(id);
+  async download(@Param("id") id: string) {
+    return this.filesService.download(id);
   }
 
   @Get(":id")

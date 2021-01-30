@@ -1,3 +1,4 @@
+import React from "react";
 import { GetServerSideProps } from "next";
 import axios from "axios";
 import { Grid, Container } from "@material-ui/core";
@@ -26,7 +27,7 @@ export default function Download(props: DownloadProps) {
   const classes = useStyles();
   const [showCaptcha, setShowCaptcha] = React.useState(false);
 
-  const { name, size } = props.file;
+  const { id, name, size } = props.file;
   return (
     <Container fixed>
       <Grid
@@ -44,7 +45,13 @@ export default function Download(props: DownloadProps) {
         </Grid>
         <Grid item className={classes.download}>
           {showCaptcha ? (
-            <Captcha onVerify={(token) => null} />
+            <Captcha
+              onVerify={(token) => {
+                axios.post(`/files/download/${id}`, {
+                  hCaptchaResponse: token,
+                });
+              }}
+            />
           ) : (
             <Button
               className={classes.downloadButton}

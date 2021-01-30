@@ -43,7 +43,15 @@ export class FilesService {
     return this.filesRepository.findOne(id);
   }
 
-  download(id: string) {
-    return "download link";
+  async download(id: string) {
+    const { name } = await this.filesRepository.findOne(id);
+    const params = {
+      Bucket: process.env.B2_BUCKET_NAME,
+      Key: id,
+      Expires: 60,
+      ResponseContentDisposition: `attachment; filename ="${name}"`,
+    };
+
+    return await this.s3.getSignedUrlPromise("getObject", params);
   }
 }

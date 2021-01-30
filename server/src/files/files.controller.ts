@@ -10,17 +10,17 @@ export class FilesController {
 
   @UseGuards(CaptchaGuard)
   @Post("/download/:id")
-  async download(@Param("id") id: string) {
+  download(@Param("id") id: string) {
     return this.filesService.download(id);
   }
 
   @Get(":id")
-  async findOne(@Param("id") id: string) {
+  findOne(@Param("id") id: string) {
     return this.filesService.findOne(id);
   }
 
   @Post()
-  async create(@Body() createFileDto: CreateFileDto) {
-    await this.filesService.create(createFileDto);
+  create(@Body() createFileDto: CreateFileDto) {
+    return this.filesService.create(createFileDto);
   }
 }

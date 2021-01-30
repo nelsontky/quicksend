@@ -5,6 +5,7 @@ import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 
 import { UploadedFile } from "../lib/interfaces";
 import Typography from "../components/Typography";
+import Captcha from "../components/Captcha";
 import Button from "../components/Button";
 import { bytesToMb } from "../lib/utils";
 
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Download(props: DownloadProps) {
   const classes = useStyles();
+  const [showCaptcha, setShowCaptcha] = React.useState(false);
 
   const { name, size } = props.file;
   return (
@@ -41,14 +43,22 @@ export default function Download(props: DownloadProps) {
           </Typography>
         </Grid>
         <Grid item className={classes.download}>
-          <Button
-            className={classes.downloadButton}
-            color="secondary"
-            variant="contained"
-            size="large"
-          >
-            Download
-          </Button>
+          {showCaptcha ? (
+            <Captcha onVerify={(token) => null} />
+          ) : (
+            <Button
+              className={classes.downloadButton}
+              color="secondary"
+              variant="contained"
+              size="large"
+              onClick={() => {
+                setShowCaptcha(true);
+              }}
+            >
+              Download
+            </Button>
+          )}
+
           <Typography>{`${bytesToMb(+size)}MB`}</Typography>
         </Grid>
       </Grid>

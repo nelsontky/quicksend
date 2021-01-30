@@ -1,16 +1,18 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-} from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, UseGuards } from "@nestjs/common";
 import { FilesService } from "./files.service";
 import { CreateFileDto } from "./dto/create-file.dto";
+
+import { CaptchaGuard } from "../common/guards/captcha.guard";
 
 @Controller("files")
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
+
+  @UseGuards(CaptchaGuard)
+  @Post("/download/:id")
+  download(@Param("id") id: string) {
+    this.filesService.download(id);
+  }
 
   @Get(":id")
   async findOne(@Param("id") id: string) {

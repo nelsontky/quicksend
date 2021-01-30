@@ -42,4 +42,8 @@ export class FilesService {
   findOne(id: string) {
     return this.filesRepository.findOne(id);
   }
+
+  download(id: string) {
+    return "download link";
+  }
 }

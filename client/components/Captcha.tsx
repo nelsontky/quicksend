@@ -10,7 +10,6 @@ export type CaptchaProps = {
 
 export default function Captcha(props: CaptchaProps) {
   const { onVerify, ...rest } = props;
-  console.log(process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY)
 
   return <div {...rest}>
     <HCaptcha

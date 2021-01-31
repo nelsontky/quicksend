@@ -65,7 +65,7 @@ export default function AppFooter() {
     <Typography component="footer" className={classes.root}>
       <Container className={classes.container}>
         <Grid container direction="column" spacing={2}>
-          <Grid item container spacing={5}>
+          <Grid item container>
             <Grid item xs={6} sm={4} md={2}>
               <Typography variant="h6" marked="left" gutterBottom>
                 Legal

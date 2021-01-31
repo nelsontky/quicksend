@@ -56,7 +56,6 @@ export class UploadsService {
             Key: uploadData.Key,
             PartNumber: i,
             UploadId: uploadData.UploadId,
-            // Expires: 3,
           })
         );
       }

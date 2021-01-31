@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable, HttpException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { IFile } from "./interfaces/file.interface";
@@ -39,8 +39,13 @@ export class FilesService {
     return this.filesRepository.save(file);
   }
 
-  findOne(id: string) {
-    return this.filesRepository.findOne(id);
+  async findOne(id: string) {
+    const file = await this.filesRepository.findOne(id);
+    if (!file) {
+      throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
+    } else {
+      return file;
+    }
   }
 
   async download(id: string) {

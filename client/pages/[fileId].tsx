@@ -20,12 +20,19 @@ const useStyles = makeStyles((theme: Theme) =>
     fileName: { textAlign: "center" },
     download: { textAlign: "center" },
     downloadButton: { marginBottom: theme.spacing(1) },
+    downloadLink: { marginBottom: theme.spacing(1) },
   })
 );
 
 export default function Download(props: DownloadProps) {
   const classes = useStyles();
-  const [showCaptcha, setShowCaptcha] = React.useState(false);
+  const [section, setSection] = React.useState<"button" | "captcha" | "link">(
+    "button"
+  );
+  const [downloadLink, setDownloadLink] = React.useState("");
+  const linkRef = React.useCallback((node: HTMLAnchorElement) => {
+    node.click();
+  }, []);
 
   const { id, name, size } = props.file;
   return (
@@ -44,29 +51,44 @@ export default function Download(props: DownloadProps) {
           </Typography>
         </Grid>
         <Grid item className={classes.download}>
-          {showCaptcha ? (
+          {section === "captcha" ? (
             <Captcha
               onVerify={(token) => {
-                axios.post(`/files/download/${id}`, {
-                  hCaptchaResponse: token,
-                });
+                axios
+                  .post(`/files/download/${id}`, {
+                    hCaptchaResponse: token,
+                  })
+                  .then((res) => {
+                    setDownloadLink(res.data);
+                    setSection("link");
+                  });
               }}
             />
-          ) : (
+          ) : section === "button" ? (
             <Button
               className={classes.downloadButton}
               color="secondary"
               variant="contained"
               size="large"
               onClick={() => {
-                setShowCaptcha(true);
+                setSection("captcha");
               }}
             >
               Download
             </Button>
+          ) : (
+            <Typography className={classes.downloadLink}>
+              If your download doesn't start in a few seconds, click{" "}
+              <a href={downloadLink} ref={linkRef}>
+                here
+              </a>{" "}
+              to download.
+            </Typography>
           )}
 
-          <Typography>{`${bytesToMb(+size)}MB`}</Typography>
+          <Typography variant="caption" component="p">{`${bytesToMb(
+            +size
+          )}MB`}</Typography>
         </Grid>
       </Grid>
     </Container>

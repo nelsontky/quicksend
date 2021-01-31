@@ -87,8 +87,7 @@ export default function UploadDropzone(
     onDropRejected: () => {
       setIsOpen(true);
     },
-    maxSize: 4 * 1024 * 1024 * 1024,
-    // maxSize: 1 * 1024 * 1024,
+    maxSize: 20 * 1024 * 1024 * 1024,
   });
 
   const classes = useStyles({ isDragActive });
@@ -144,7 +143,7 @@ export default function UploadDropzone(
             <div {...getRootProps({ className: classes.dropzone })}>
               <input {...getInputProps()} />
               <p>Drag and drop some files here, or click to select files</p>
-              <span>(Max file size: 4GB)</span>
+              <span>(Max file size: 20GB)</span>
             </div>
           </Collapse>
         </Grid>

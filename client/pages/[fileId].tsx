@@ -34,6 +34,12 @@ export default function Download(props: DownloadProps) {
     node.click();
   }, []);
 
+  React.useEffect(() => {
+    if (downloadLink.length > 0) {
+      setSection("link");
+    }
+  }, [downloadLink]);
+
   const { id, name, size } = props.file;
   return (
     <Container fixed>
@@ -60,7 +66,6 @@ export default function Download(props: DownloadProps) {
                   })
                   .then((res) => {
                     setDownloadLink(res.data);
-                    setSection("link");
                   });
               }}
             />

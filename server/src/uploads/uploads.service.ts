@@ -45,12 +45,8 @@ export class UploadsService {
     };
     try {
       const uploadData = await this.createMultipartUpload(params);
-      // const numberOfChunks = Math.min(
-      //   +process.env.MAX_UPLOAD_CHUNKS,
-      //   Math.floor(fileSize / +process.env.MIN_UPLOAD_CHUNK_SIZE) + 1
-      // );
       const numberOfChunks =
-        Math.floor(fileSize / +process.env.MIN_UPLOAD_CHUNK_SIZE) + 1;
+        Math.floor(fileSize / +process.env.UPLOAD_CHUNK_SIZE) + 1;
       let signedUrlPromises = [];
 
       for (let i = 1; i <= numberOfChunks; i++) {

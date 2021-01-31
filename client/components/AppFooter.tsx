@@ -93,6 +93,15 @@ export default function AppFooter() {
                 <li className={classes.listItem}>
                   <Link href="/faq">FAQ</Link>
                 </li>
+                <li className={classes.listItem}>
+                  <Link
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSd1AvXhzNE_Rf3CER26y7n4n-HNmyNHHpBIO3gshHeHvxifTw/viewform"
+                  >
+                    Contact Us
+                  </Link>
+                </li>
               </ul>
             </Grid>
           </Grid>

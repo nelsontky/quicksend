@@ -15,6 +15,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+ENV NEXT_PUBLIC_HCAPTCHA_SITE_KEY=096e004b-97fa-4a73-8271-c509eb06ecc2
+
 RUN npm run build
 
 EXPOSE 3000

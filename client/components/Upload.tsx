@@ -124,11 +124,12 @@ export default function UploadDropzone(
             The following files exceed the max file size of 4GB:
           </Typography>
           <ul>
-            {fileRejections.map((error) => (
-              <li key={error.file.path}>
-                {error.file.path} - {bytesToMb(error.file.size)} MB
-              </li>
-            ))}
+            {fileRejections.map((error) => {
+              const file = error.file as any;
+              return <li key={file.path}>
+                {file.path} - {bytesToMb(file.size)} MB
+              </li>;
+            })}
           </ul>
         </DialogContent>
       </ClosableDialog>

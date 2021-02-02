@@ -10,6 +10,8 @@ services:
 
   client:
     build: ./client
+    env_file:
+      - .env
     ports:
       - 3000:3000
 
@@ -19,9 +21,6 @@ services:
       - .env
     volumes:
       - postgres-quicksend:/var/lib/postgresql/data
-
-  position-recognition:
-    build: ./position-recognition
 
 volumes:
   postgres-quicksend:

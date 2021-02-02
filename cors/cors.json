@@ -1,7 +1,11 @@
 [
   {
     "corsRuleName": "uploadFromLocalhost",
-    "allowedOrigins": ["http://localhost:3000"],
+    "allowedOrigins": [
+      "http://localhost:3000",
+      "https://quicksend.cloud",
+      "https://www.quicksend.cloud"
+    ],
     "allowedHeaders": ["*"],
     "exposeHeaders": ["ETag"],
     "allowedOperations": ["s3_put"],

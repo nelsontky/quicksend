@@ -2,9 +2,14 @@ import * as React from "react";
 import Head from "next/head";
 import { AppProps } from "next/app";
 import { CacheProvider } from "@emotion/react";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import { CssBaseline, Grid } from "@material-ui/core";
 import createCache from "@emotion/cache";
-import { ThemeProvider } from "@material-ui/core/styles";
+import {
+  ThemeProvider,
+  createStyles,
+  Theme,
+  makeStyles,
+} from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import axios from "axios";
 
@@ -15,6 +20,17 @@ import Snackbars from "../components/Snackbars";
 
 import theme from "../lib/theme";
 import store from "../store";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    flexContainer: {
+      minHeight: "calc(100vh - 64px)",
+      [theme.breakpoints.up("sm")]: {
+        minHeight: "calc(100vh - 70px)",
+      },
+    },
+  })
+);
 
 export const cache = createCache({ key: "css", prepend: true });
 
@@ -32,6 +48,7 @@ export default function MyApp(props: AppProps) {
   axios.defaults.baseURL =
     typeof window !== "undefined" ? "/api/v1" : "http://server:5000/api/v1";
 
+  const classes = useStyles();
   return (
     <CacheProvider value={cache}>
       <Head>
@@ -44,8 +61,12 @@ export default function MyApp(props: AppProps) {
           <CssBaseline />
           <Snackbars />
           <AppAppBar />
-          <Component {...pageProps} />
-          <AppFooter />
+          <Grid className={classes.flexContainer} container direction="column">
+            <Grid item>
+              <Component {...pageProps} />
+            </Grid>
+            <AppFooter />
+          </Grid>
         </ThemeProvider>
       </Provider>
     </CacheProvider>

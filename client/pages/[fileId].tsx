@@ -40,7 +40,9 @@ export default function Download(props: DownloadProps) {
   );
   const [downloadLink, setDownloadLink] = React.useState("");
   const linkRef = React.useCallback((node: HTMLAnchorElement) => {
-    node.click();
+    if (node) {
+      node.click();
+    }
   }, []);
 
   React.useEffect(() => {

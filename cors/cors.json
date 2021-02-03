@@ -1,6 +1,6 @@
 [
   {
-    "corsRuleName": "uploadFromLocalhost",
+    "corsRuleName": "upload",
     "allowedOrigins": [
       "http://localhost:3000",
       "https://quicksend.cloud",

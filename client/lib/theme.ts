@@ -1,7 +1,7 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
 import { green, grey, red } from "@material-ui/core/colors";
 
-const rawTheme = createMuiTheme({
+let rawTheme = createMuiTheme({
   palette: {
     primary: {
       light: "#69696a",
@@ -36,6 +36,8 @@ const rawTheme = createMuiTheme({
     fontWeightMedium: 700, // Roboto Condensed
   },
 });
+
+rawTheme = responsiveFontSizes(rawTheme);
 
 const fontHeader = {
   color: rawTheme.palette.text.primary,

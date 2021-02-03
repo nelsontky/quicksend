@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { CatsModule } from "./cats/cats.module";
 import { CoreModule } from "./core/core.module";
 import { FilesModule } from "./files/files.module";
 import { File } from "./files/entities/file.entity";
@@ -21,7 +20,6 @@ import { UploadsModule } from "./uploads/uploads.module";
       synchronize: true,
     }),
     CoreModule,
-    CatsModule,
     FilesModule,
     UploadsModule,
   ],

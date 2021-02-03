@@ -17,8 +17,17 @@ export interface DownloadProps {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: { height: "80vh" },
-    fileName: { textAlign: "center" },
-    download: { textAlign: "center" },
+    fileName: {
+      textAlign: "center",
+      overflow: "hidden",
+      overflowWrap: "anywhere",
+    },
+    title: {
+      display: "-webkit-box",
+      "-webkit-line-clamp": 3,
+      "-webkit-box-orient": "vertical",
+    },
+    download: { textAlign: "center", marginTop: theme.spacing(5) },
     downloadButton: { marginBottom: theme.spacing(1) },
     downloadLink: { marginBottom: theme.spacing(1) },
   })
@@ -49,10 +58,9 @@ export default function Download(props: DownloadProps) {
         direction="column"
         justify="center"
         alignItems="center"
-        spacing={5}
       >
         <Grid item className={classes.fileName}>
-          <Typography variant="h2" marked="center">
+          <Typography className={classes.title} variant="h2" marked="center">
             {name}
           </Typography>
         </Grid>

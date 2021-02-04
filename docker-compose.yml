@@ -23,7 +23,7 @@ services:
     working_dir: /app
     volumes:
       - ./client:/app
-      
+
   postgres:
     image: postgres:latest
     env_file:
@@ -37,6 +37,17 @@ services:
       - 8081:8080
     logging:
       driver: none
+
+  admin:
+    image: node:current-alpine
+    command:
+      sh -c "npm install -g typescript && npm install -g typeorm && npm install"
+    env_file:
+      - .env
+    working_dir: /app
+    volumes:
+      - ./admin:/app
+    tty: true
 
 volumes:
   postgres-dev-quicksend:

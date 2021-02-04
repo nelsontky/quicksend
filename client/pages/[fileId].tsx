@@ -114,16 +114,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { fileId } = context.params;
 
   try {
-    const file = (await axios.get(`http://server:5000/api/v1/files/${fileId}`)).data;
+    const file = (await axios.get(`http://server:5000/api/v1/files/${fileId}`))
+      .data;
 
     return {
       props: {
         file,
       },
     };
-  } catch(error) {
-       console.log('Error', error.message);
-       console.log(error.config);
+  } catch (error) {
+    console.error("Error", error.message);
+    console.error(error.config);
+    
     context.res.writeHead(302, { Location: "/" });
     context.res.end();
     return {

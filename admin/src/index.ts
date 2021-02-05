@@ -19,6 +19,7 @@ async function genSitemap() {
   // Create a stream to write to
   const stream = new SitemapStream({ hostname: "https://quicksend.cloud" });
 
+  console.log("Generated new site map");
   // Return a promise that resolves with your XML string
   return streamToPromise(Readable.from(links).pipe(stream)).then((data) => {
     writeFileSync("../client/public/sitemaps/sitemap.xml", data.toString());
@@ -26,8 +27,11 @@ async function genSitemap() {
 }
 
 createConnection()
-  .then(() => {
+  .then(async () => {
+    await genSitemap();
     console.log("cron job started");
-    schedule.scheduleJob("*/1 * * * *", genSitemap);
+
+    // Run everyday at 12am SG time (GMT +8)
+    schedule.scheduleJob({ hour: 0, tz: "Asia/Singapore" }, genSitemap);
   })
   .catch((error) => console.log(error));

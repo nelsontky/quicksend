@@ -25,5 +25,20 @@ services:
       - postgres-quicksend:/var/lib/postgresql/data
     restart: always
 
+  admin:
+    image: node:current-alpine
+    command:
+      sh -c "npm install -g typescript && npm install -g typeorm && cd admin/ &&
+      npm run start"
+    env_file:
+      - .env
+    working_dir: /app
+    volumes:
+      - ./admin:/app/admin
+      - ./server:/app/server
+      - ./client:/app/client
+    tty: true
+    restart: always
+
 volumes:
   postgres-quicksend:

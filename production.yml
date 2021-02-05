@@ -29,8 +29,8 @@ services:
     image: node:current-alpine
     command:
       sh -c "npm install -g typescript && npm install -g ts-node && npm install
-      @types/node --save-dev && npm install -g typeorm && cd admin/ && npm run
-      start"
+      @types/node --save-dev && npm install -g typeorm && cd admin/ && npm
+      install && npm run start"
     env_file:
       - .env
     working_dir: /app

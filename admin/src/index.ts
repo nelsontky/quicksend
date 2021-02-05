@@ -32,6 +32,9 @@ createConnection()
     console.log("cron job started");
 
     // Run everyday at 12am SG time (GMT +8)
-    schedule.scheduleJob({ hour: 0, tz: "Asia/Singapore" }, genSitemap);
+    schedule.scheduleJob(
+      { hour: 0, minute: 0, second: 0, tz: "Asia/Singapore" },
+      genSitemap
+    );
   })
   .catch((error) => console.log(error));

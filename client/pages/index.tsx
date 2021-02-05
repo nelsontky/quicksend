@@ -32,6 +32,11 @@ export default function Index() {
           property="twitter:description"
           content="Send your files quickly! Upload up to 20GB per file for free on the fastest file hosting site today!"
         />
+        {/* Google verification */}
+        <meta
+          name="google-site-verification"
+          content="BrgxqhcIJLzQ2J5ejZgxSxD79m6fQAKk-osYPm3MLDA"
+        />
       </Head>
       <ProductHero />
       {/* <ProductValues /> */}

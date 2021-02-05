@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { createConnection, getRepository } from "typeorm";
 
-import { File } from "./entity/file.entity";
+import { File } from "../../server/src/files/entities/file.entity";
 
 createConnection()
   .then(async (connection) => {

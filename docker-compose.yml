@@ -40,13 +40,14 @@ services:
 
   admin:
     image: node:current-alpine
-    command:
-      sh -c "npm install -g typescript && npm install -g typeorm && npm install"
+    # command:
+    #   sh -c "npm install -g typescript && npm install -g typeorm && npm install"
     env_file:
       - .env
     working_dir: /app
     volumes:
-      - ./admin:/app
+      - ./admin:/app/admin
+      - ./server:/app/server
     tty: true
 
 volumes:

@@ -28,7 +28,7 @@ services:
   admin:
     image: node:current-alpine
     command:
-      sh -c "cd server/ && npm install && cd admin/ && npm install -g typeorm
+      sh -c "cd server/ && npm install && cd ../admin/ && npm install -g typeorm
       &&  npm install && npm run start"
     env_file:
       - .env

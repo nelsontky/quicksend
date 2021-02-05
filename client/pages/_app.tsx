@@ -52,7 +52,6 @@ export default function MyApp(props: AppProps) {
   return (
     <CacheProvider value={cache}>
       <Head>
-        <title>Quick Send</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <Provider store={store}>

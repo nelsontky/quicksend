@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head";
 import { GetServerSideProps } from "next";
 import axios from "axios";
 import { Grid, Container } from "@material-ui/core";
@@ -52,8 +53,27 @@ export default function Download(props: DownloadProps) {
   }, [downloadLink]);
 
   const { id, name, size } = props.file;
+  const metaTitle = `Download ${name}`;
+  const metaDescription = `Download ${name} fast and free!`;
   return (
     <Container fixed>
+      <Head>
+        {/* Primary Meta Tags */}
+        <title>{metaTitle}</title>
+        <meta name="title" content={metaTitle} />
+        <meta name="description" content={metaDescription} />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://quicksend.cloud/" />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+
+        {/* Twitter */}
+        <meta property="twitter:url" content="https://quicksend.cloud/" />
+        <meta property="twitter:title" content={metaTitle} />
+        <meta property="twitter:description" content={metaDescription} />
+      </Head>
       <Grid
         container
         className={classes.root}
@@ -125,7 +145,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   } catch (error) {
     console.error("Error", error.message);
     console.error(error.config);
-    
+
     context.res.writeHead(302, { Location: "/" });
     context.res.end();
     return {

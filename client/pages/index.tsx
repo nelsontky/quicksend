@@ -1,3 +1,5 @@
+import Head from "next/head";
+
 // import ProductCategories from './modules/views/ProductCategories';
 // import ProductSmokingHero from './modules/views/ProductSmokingHero';
 import ProductHero from "../components/ProductHero";
@@ -8,6 +10,9 @@ import ProductHero from "../components/ProductHero";
 export default function Index() {
   return (
     <>
+      <Head>
+        <title>Quick Send</title>
+      </Head>
       <ProductHero />
       {/* <ProductValues /> */}
       {/* <ProductCategories />

@@ -16,7 +16,7 @@ import { UploadsModule } from "./uploads/uploads.module";
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_USER,
       entities: [File],
-      migrations: ["../migrations/*.ts"]
+      migrations: ["../migrations/*.ts"],
     }),
     CoreModule,
     FilesModule,

@@ -32,7 +32,6 @@ sub vcl_recv {
 }
 
 sub vcl_deliver {
-
   /* if we are in the auth phase */
   if (!req.http.X-Authed) {
 
@@ -57,12 +56,4 @@ sub vcl_deliver {
 
     restart;
   }
-
-#FASTLY deliver
-
-  ...etc...
 }
-
-set req.hash_always_miss = true;
-set req.backend = F_origin_1;
-set req.url = "/api/v1/files/test";

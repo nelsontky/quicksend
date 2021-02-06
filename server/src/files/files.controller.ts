@@ -27,11 +27,6 @@ export class FilesController {
     return this.filesService.download(id);
   }
 
-  @Post()
-  create(@Body() createFileDto: CreateFileDto) {
-    return this.filesService.create(createFileDto);
-  }
-
   @Get(":id")
   findOne(@Param("id") id: string) {
     return this.filesService.findOne(id);

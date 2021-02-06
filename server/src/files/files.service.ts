@@ -21,36 +21,17 @@ export class FilesService {
   constructor(
     @InjectRepository(File) private filesRepository: Repository<File>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache
-  ) {
-    // Create an S3 client for file reading
-    const credentials = new AWS.Credentials({
-      accessKeyId: process.env.B2_APP_READ_ID,
-      secretAccessKey: process.env.B2_APP_READ_KEY,
-    });
-    AWS.config.credentials = credentials;
-    const endpoint = new AWS.Endpoint(process.env.B2_AWS_ENDPOINT);
-
-    this.s3 = new AWS.S3({
-      endpoint,
-      signatureVersion: "v4",
-      region: "us-west-000",
-    });
-  }
+  ) {}
 
   async isAuth(downloadKey: string) {
-    console.log("Calling auth endpoint");
     const downloadCounts = await this.cacheManager.get(downloadKey);
-    console.log(downloadCounts);
-    console.log(typeof downloadCounts);
     if (typeof downloadCounts !== "number") {
       throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
 
     if (downloadCounts >= 2) {
-      console.log("why so many ", downloadCounts);
       await this.cacheManager.del(downloadKey);
     } else {
-      console.log("here is a normal increment ", downloadCounts);
       await this.cacheManager.set(downloadKey, downloadCounts + 1);
     }
 
@@ -80,21 +61,16 @@ export class FilesService {
     const downloadKey = crypto.randomBytes(32).toString("hex");
 
     // New download key that hasn't been used before
-    await this.cacheManager.set(downloadKey, 0, { ttl: 36000 });
+    await this.cacheManager.set(downloadKey, 0, { ttl: 60 });
     return downloadKey;
   }
 
   async download(id: string) {
-    // const { name } = await this.filesRepository.findOne(id);
-    // const params = {
-    //   Bucket: process.env.B2_BUCKET_NAME,
-    //   Key: id,
-    //   Expires: 60,
-    //   ResponseContentDisposition: `attachment; filename ="${name}"`,
-    // };
-
-    // return await this.s3.getSignedUrlPromise("getObject", params);
     const downloadKey = await this.setAuth();
-    return `https://quicksend.global.ssl.fastly.net/${id}?downloadKey=${downloadKey}`;
+
+    // Development environment does not need key auth
+    return process.env.NODE_ENV === "development"
+      ? `https://quicksend-dev.global.ssl.fastly.net/${id}`
+      : `https://quicksend.global.ssl.fastly.net/${id}?downloadKey=${downloadKey}`;
   }
 }

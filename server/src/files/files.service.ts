@@ -1,9 +1,16 @@
-import { HttpStatus, Injectable, HttpException } from "@nestjs/common";
+import {
+  HttpStatus,
+  Injectable,
+  HttpException,
+  Inject,
+  CACHE_MANAGER,
+} from "@nestjs/common";
+import { Cache } from "cache-manager";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { IFile } from "./interfaces/file.interface";
 import AWS from "aws-sdk";
-// import { UpdateFileDto } from './dto/update-file.dto';
+import * as crypto from "crypto";
 
 import { File } from "./entities/file.entity";
 
@@ -12,7 +19,8 @@ export class FilesService {
   s3: AWS.S3;
 
   constructor(
-    @InjectRepository(File) private filesRepository: Repository<File>
+    @InjectRepository(File) private filesRepository: Repository<File>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {
     // Create an S3 client for file reading
     const credentials = new AWS.Credentials({
@@ -27,6 +35,22 @@ export class FilesService {
       signatureVersion: "v4",
       region: "us-west-000",
     });
+  }
+
+  async isAuth(downloadKey: string) {
+    console.log("herrrrrrrrrrrrrrrrrrrrr")
+    const downloadCounts = await this.cacheManager.get(downloadKey);
+    if (typeof downloadCounts !== "number") {
+      throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    // if (downloadCounts >= 2) {
+    //   await this.cacheManager.del(downloadKey);
+    // } else {
+    await this.cacheManager.set(downloadKey, +downloadCounts + 1);
+    // }
+
+    return true;
   }
 
   create(fileToCreate: IFile) {
@@ -46,6 +70,14 @@ export class FilesService {
     } else {
       return file;
     }
+  }
+
+  private async setAuth() {
+    const downloadKey = crypto.randomBytes(32).toString("hex");
+
+    // New download key that hasn't been used before
+    const res = await this.cacheManager.set(downloadKey, 0, { ttl: 3600 });
+    return downloadKey;
   }
 
   async download(id: string) {

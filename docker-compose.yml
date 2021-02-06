@@ -30,6 +30,13 @@ services:
       - .env
     volumes:
       - postgres-dev-quicksend:/var/lib/postgresql/data
+    expose:
+      - 5432
+
+  redis:
+    image: redis
+    expose:
+      - 6379
 
   adminer:
     image: adminer
@@ -49,7 +56,6 @@ services:
       - ./admin:/app/admin
       - ./server:/app/server
       - ./client:/app/client
-    tty: true
 
 volumes:
   postgres-dev-quicksend:

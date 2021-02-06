@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Query,
+} from "@nestjs/common";
 import { FilesService } from "./files.service";
 import { CreateFileDto } from "./dto/create-file.dto";
 
@@ -8,10 +16,9 @@ import { CaptchaGuard } from "../common/guards/captcha.guard";
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
-  @Get("/test")
-  testing() {
-    console.log("This testing endpoint is being called");
-    return "Test success";
+  @Get("/auth")
+  isAuth(@Query("downloadKey") downloadKey: string) {
+    return this.filesService.isAuth(downloadKey);
   }
 
   @UseGuards(CaptchaGuard)

@@ -47,10 +47,11 @@ export class FilesService {
     }
 
     if (downloadCounts >= 2) {
-      console.log("why so many", downloadCounts);
+      console.log("why so many ", downloadCounts);
       await this.cacheManager.del(downloadKey);
     } else {
-      await this.cacheManager.set(downloadKey, +downloadCounts + 1);
+      console.log("here is a normal increment ", downloadCounts);
+      await this.cacheManager.set(downloadKey, downloadCounts + 1);
     }
 
     return true;

@@ -8,19 +8,25 @@ import { CaptchaGuard } from "../common/guards/captcha.guard";
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
+  @Get("/test")
+  testing() {
+    console.log("This testing endpoint is being called");
+    return "Test success";
+  }
+
   @UseGuards(CaptchaGuard)
   @Post("/download/:id")
   download(@Param("id") id: string) {
     return this.filesService.download(id);
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.filesService.findOne(id);
-  }
-
   @Post()
   create(@Body() createFileDto: CreateFileDto) {
     return this.filesService.create(createFileDto);
+  }
+
+  @Get(":id")
+  findOne(@Param("id") id: string) {
+    return this.filesService.findOne(id);
   }
 }

@@ -25,6 +25,12 @@ services:
       - postgres-quicksend:/var/lib/postgresql/data
     restart: always
 
+  redis:
+    image: redis
+    expose:
+      - 6379
+    restart: always
+
   admin:
     image: node:current-alpine
     command:

@@ -38,17 +38,17 @@ export class FilesService {
   }
 
   async isAuth(downloadKey: string) {
-    console.log("herrrrrrrrrrrrrrrrrrrrr")
+    console.log("Calling auth endpoint");
     const downloadCounts = await this.cacheManager.get(downloadKey);
     if (typeof downloadCounts !== "number") {
       throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
 
-    // if (downloadCounts >= 2) {
-    //   await this.cacheManager.del(downloadKey);
-    // } else {
-    await this.cacheManager.set(downloadKey, +downloadCounts + 1);
-    // }
+    if (downloadCounts >= 2) {
+      await this.cacheManager.del(downloadKey);
+    } else {
+      await this.cacheManager.set(downloadKey, +downloadCounts + 1);
+    }
 
     return true;
   }
@@ -76,19 +76,21 @@ export class FilesService {
     const downloadKey = crypto.randomBytes(32).toString("hex");
 
     // New download key that hasn't been used before
-    const res = await this.cacheManager.set(downloadKey, 0, { ttl: 3600 });
+    await this.cacheManager.set(downloadKey, 0, { ttl: 36000 });
     return downloadKey;
   }
 
   async download(id: string) {
-    const { name } = await this.filesRepository.findOne(id);
-    const params = {
-      Bucket: process.env.B2_BUCKET_NAME,
-      Key: id,
-      Expires: 60,
-      ResponseContentDisposition: `attachment; filename ="${name}"`,
-    };
+    // const { name } = await this.filesRepository.findOne(id);
+    // const params = {
+    //   Bucket: process.env.B2_BUCKET_NAME,
+    //   Key: id,
+    //   Expires: 60,
+    //   ResponseContentDisposition: `attachment; filename ="${name}"`,
+    // };
 
-    return await this.s3.getSignedUrlPromise("getObject", params);
+    // return await this.s3.getSignedUrlPromise("getObject", params);
+    const downloadKey = await this.setAuth();
+    return `https://quicksend.global.ssl.fastly.net/${id}?downloadKey=${downloadKey}`;
   }
 }

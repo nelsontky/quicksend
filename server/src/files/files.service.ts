@@ -40,11 +40,14 @@ export class FilesService {
   async isAuth(downloadKey: string) {
     console.log("Calling auth endpoint");
     const downloadCounts = await this.cacheManager.get(downloadKey);
+    console.log(downloadCounts);
+    console.log(typeof downloadCounts);
     if (typeof downloadCounts !== "number") {
       throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
 
     if (downloadCounts >= 2) {
+      console.log("why so many", downloadCounts);
       await this.cacheManager.del(downloadKey);
     } else {
       await this.cacheManager.set(downloadKey, +downloadCounts + 1);

@@ -32,7 +32,7 @@ export class FilesService {
     if (downloadCounts >= 2) {
       await this.cacheManager.del(downloadKey);
     } else {
-      await this.cacheManager.set(downloadKey, downloadCounts + 1);
+      await this.cacheManager.set(downloadKey, downloadCounts + 1, { ttl: 60 });
     }
 
     return true;
@@ -61,7 +61,7 @@ export class FilesService {
     const downloadKey = crypto.randomBytes(32).toString("hex");
 
     // New download key that hasn't been used before
-    await this.cacheManager.set(downloadKey, 0, { ttl: 60000 });
+    await this.cacheManager.set(downloadKey, 0, { ttl: 60 });
     return downloadKey;
   }
 

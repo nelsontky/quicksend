@@ -61,16 +61,21 @@ export class FilesService {
     const downloadKey = crypto.randomBytes(32).toString("hex");
 
     // New download key that hasn't been used before
-    await this.cacheManager.set(downloadKey, 0, { ttl: 60 });
+    await this.cacheManager.set(downloadKey, 0, { ttl: 60000 });
     return downloadKey;
   }
 
   async download(id: string) {
     const downloadKey = await this.setAuth();
+    const fileName = (await this.filesRepository.findOne(id)).name;
 
     // Development environment does not need key auth
     return process.env.NODE_ENV === "development"
-      ? `https://quicksend-dev.global.ssl.fastly.net/${id}`
-      : `https://quicksend.global.ssl.fastly.net/${id}?downloadKey=${downloadKey}`;
+      ? `https://quicksend-dev.global.ssl.fastly.net/${id}?fileName=${encodeURIComponent(
+          fileName
+        )}`
+      : `https://quicksend.global.ssl.fastly.net/${id}?downloadKey=${downloadKey}&fileName=${encodeURIComponent(
+          fileName
+        )}`;
   }
 }

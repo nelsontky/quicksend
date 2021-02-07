@@ -63,6 +63,8 @@ sub vcl_miss {
   declare local var.canonicalHeaders STRING;
   declare local var.signedHeaders STRING;
   declare local var.canonicalRequest STRING;
+  declare local var.canonicalUri STRING;
+  declare local var.fileName STRING;
   declare local var.canonicalQuery STRING;
   declare local var.stringToSign STRING;
   declare local var.dateStamp STRING;
@@ -79,19 +81,21 @@ sub vcl_miss {
     set bereq.http.x-amz-content-sha256 = digest.hash_sha256("");
     set bereq.http.x-amz-date = strftime({"%Y%m%dT%H%M%SZ"}, now);
     set bereq.http.host = var.b2Bucket ".s3." var.b2Region ".backblazeb2.com";
-    set bereq.url = querystring.remove(bereq.url);
-    set bereq.url = regsuball(urlencode(urldecode(bereq.url.path)), {"%2F"}, "/");
+    set var.fileName = querystring.get(bereq.url, "fileName");
+    set var.canonicalQuery = urlencode("response-content-disposition") "=" urlencode("attachment; filename=" var.fileName);
+    set var.canonicalUri = querystring.remove(bereq.url);
+    set var.canonicalUri = regsuball(urlencode(urldecode(bereq.url.path)), {"%2F"}, "/");
+    set bereq.url = querystring.remove(bereq.url) "?" var.canonicalQuery;
     set var.dateStamp = strftime({"%Y%m%d"}, now);
     set var.canonicalHeaders = ""
       "host:" bereq.http.host LF
       "x-amz-content-sha256:" bereq.http.x-amz-content-sha256 LF
       "x-amz-date:" bereq.http.x-amz-date LF
     ;
-    set var.canonicalQuery = "";
     set var.signedHeaders = "host;x-amz-content-sha256;x-amz-date";
     set var.canonicalRequest = ""
       "GET" LF
-      bereq.url.path LF
+      var.canonicalUri LF
       var.canonicalQuery LF
       var.canonicalHeaders LF
       var.signedHeaders LF

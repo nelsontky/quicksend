@@ -12,7 +12,7 @@ export interface SnackbarsState {
 }
 
 export const slice = createSlice({
-  name: "snackbars",
+  name: "snackbar",
   initialState: { open: false, snackPack: [] } as SnackbarsState,
   reducers: {
     alert: (state, action: PayloadAction<SnackBarMessageNoKey>) => {
